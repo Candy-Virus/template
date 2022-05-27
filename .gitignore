@@ -1,0 +1,9 @@
+node_modules
+.DS_Store
+dist
+auto-import.d.ts
+components.d.ts
+.vscode
+dist-ssr
+yarn-error.log
+*.local
