@@ -3,10 +3,10 @@
  * @Author: menggt
  * @Date: 2022-04-18 11:31:46
  * @LastEditors: menggt
- * @LastEditTime: 2022-04-19 10:49:03
+ * @LastEditTime: 2022-05-27 14:51:21
 -->
 <template>
-  <div class="echarts-wrap" :id="'echartsbox-' + uniqueId" :key="uniqueId"></div>
+  <div class="echarts-wrap" :id="'echartsbox-' + props.uniqueId" :key="props.uniqueId"></div>
 </template>
 
 <script setup lang="ts">
@@ -14,11 +14,12 @@ import * as echarts from 'echarts'
 import { createGuid } from '@/utils/common'
 
 interface Props {
+  uniqueId?: string |number
   options?: any
 }
 
-const uniqueId: any = createGuid()
 const props = withDefaults(defineProps<Props>(), {
+  uniqueId: createGuid(),
   options: () => { return {} }
 })
 const $EventBus: any = inject('$EventBus')
@@ -33,11 +34,11 @@ watch(() => props.options, async (n, o) => {
 }, { deep: true, immediate: true })
 
 const init = () => {
-  if (!props.options || !props.options.series || !document.getElementById('echartsbox-' + uniqueId)) {
+  if (!props.options || !props.options.series || !document.getElementById('echartsbox-' + props.uniqueId)) {
     return
   }
   if (!myCharts) {
-    myCharts = echarts.init(document.getElementById('echartsbox-' + uniqueId) as HTMLElement)
+    myCharts = echarts.init(document.getElementById('echartsbox-' + props.uniqueId) as HTMLElement)
     myCharts.off('click')
     $EventBus.emit('loaded', myCharts)
     myCharts.on('click', handleClick)
